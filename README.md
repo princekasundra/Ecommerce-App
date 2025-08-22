@@ -14,6 +14,12 @@ implement logout confirmation functionality on back
 
 Navigation: Easy movement between login, home, product details, cart, and checkout screens.
 
+5.infinite scroll for home screen (but as fake store api has limited data so it will gives only 20 data so it repeated right now )
+
+6.pull to refresh functionality works on home page
+
+7.add light dark mode 
+
 
 How It Works
 1.Login: Enter email and password to access the app. The app remembers your login for next time.

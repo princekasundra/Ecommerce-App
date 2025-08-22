@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
 import { addToCart } from '../store/slices/cartSlice';
+import { RootState } from '../store/store';
 
 type RootStackParamList = {
   ProductDetail: { product: Product };
@@ -24,19 +25,35 @@ type ProductDetailScreenProps = {
 const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ route }) => {
   const { product } = route.params;
   const dispatch = useDispatch();
+  
+
+  const isDarkMode = useSelector((state) => state.theme.isDarkMode); // get theme
 
   const handleAddToCart = () => {
     dispatch(addToCart(product));
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={[
+        styles.container,
+        { backgroundColor: isDarkMode ? '#121212' : '#fff' },
+      ]}
+    >
       <Image source={{ uri: product.image }} style={styles.image} />
       <View style={styles.details}>
-        <Text style={styles.title}>{product.title}</Text>
-        <Text style={styles.price}>₹{product.price}</Text>
-        <Text style={styles.description}>{product.description}</Text>
-        <Text style={styles.rating}>Rating: {product.rating.rate} ({product.rating.count} reviews)</Text>
+        <Text style={[styles.title, { color: isDarkMode ? '#fff' : '#000' }]}>
+          {product.title}
+        </Text>
+        <Text style={[styles.price, { color: isDarkMode ? '#ccc' : '#888' }]}>
+          ₹{product.price}
+        </Text>
+        <Text style={[styles.description, { color: isDarkMode ? '#ddd' : '#333' }]}>
+          {product.description}
+        </Text>
+        <Text style={[styles.rating, { color: isDarkMode ? '#aaa' : '#333' }]}>
+          Rating: {product.rating.rate} ({product.rating.count} reviews)
+        </Text>
         <TouchableOpacity style={styles.button} onPress={handleAddToCart}>
           <Text style={styles.buttonText}>Add to Cart</Text>
         </TouchableOpacity>
@@ -48,7 +65,6 @@ const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   image: {
     width: '100%',
@@ -65,7 +81,6 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 18,
-    color: '#888',
     marginBottom: 10,
   },
   description: {
